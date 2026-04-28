@@ -4,7 +4,7 @@
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
-  --base:    #00050a;
+  --base:    #00070f; /* Matched exactly to the logo's background RGB(0, 7, 15) */
   --deep:    #00172d;
   --cyan:    #00e5ff;
   --cyan-dim:#00b8cc;
@@ -93,8 +93,7 @@ body.no-scroll { overflow: hidden; }
   max-width: 80%;
   opacity: 0;
   transform: translate(-50%, -50%) scale(1.05);
-  animation: logoFadeIn 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-  filter: drop-shadow(0 0 20px rgba(0, 229, 255, 0.4));
+  animation: logoFadeIn 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
 }
 
 .preloader-logo img {

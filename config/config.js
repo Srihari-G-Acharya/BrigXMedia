@@ -9,15 +9,15 @@
 const SITE_CONFIG = {
 
   // ── BRAND ─────────────────────────────────────────────────
-  brandName:   "BRIGXMEDIA",
-  tagline:     "We Turn Attention Into Demand.",
-  year:        "2026",
-  location:    "India",
+  brandName: "BRIG MEDIA",
+  tagline: "We Turn Attention Into Demand.",
+  year: "2026",
+  location: "India",
 
   // ── CONTACT ───────────────────────────────────────────────
   whatsappNumber: "91XXXXXXXXXX",   // e.g. "919876543210" (no + or spaces)
-  email:          "hello@brigmedia.in",
-  website:        "https://brigmedia.in",
+  email: "hello@brigmedia.in",
+  website: "https://brigmedia.in",
 
   // ── BOOKING ───────────────────────────────────────────────
   // Link for the "Book Free Strategy Call" button.
@@ -40,19 +40,19 @@ const SITE_CONFIG = {
   // ── TESTIMONIALS ──────────────────────────────────────────
   testimonials: [
     {
-      quote:  "Better enquiries started coming in almost immediately after BRIG MEDIA took over our reels. The quality shift was noticeable right away.",
+      quote: "Better enquiries started coming in almost immediately after BRIG MEDIA took over our reels. The quality shift was noticeable right away.",
       author: "Fitness Studio Owner",
-      stars:  5,
+      stars: 5,
     },
     {
-      quote:  "Our brand finally looks premium online. The video quality and consistency of posts transformed how customers perceive us.",
+      quote: "Our brand finally looks premium online. The video quality and consistency of posts transformed how customers perceive us.",
       author: "Clothing Brand Founder",
-      stars:  5,
+      stars: 5,
     },
     {
-      quote:  "Consistent growth month after month. We handed them our social media and just focused on running the café — it works.",
+      quote: "Consistent growth month after month. We handed them our social media and just focused on running the café — it works.",
       author: "Café Owner",
-      stars:  5,
+      stars: 5,
     },
   ],
 

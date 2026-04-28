@@ -23,7 +23,7 @@
 <div id="preloader">
   <div class="shutter-overlay"></div>
   <div class="preloader-logo">
-    <img src="assets/brig_logo_cyan.png" alt="BRIG MEDIA Logo" />
+    <img src="assets/brig_logo_new.jpg" alt="BRIG MEDIA Logo" />
   </div>
 </div>
 
@@ -412,10 +412,9 @@ function starsHTML(count) {
   const C = SITE_CONFIG;
   const wa = waLink(C.whatsappNumber);
 
-  // Brand name helper — splits "BRIGXMEDIA" → "BRIG<span>X</span>MEDIA"
+  // Brand name helper — splits "BRIG MEDIA" → "BRIG <span style="color:var(--cyan)">MEDIA</span>"
   function brandHTML(name) {
-    // Insert cyan span around the "X" separator if present
-    return name.replace(/^(BRIG)(X)(MEDIA)$/i, '$1<span>$2</span>$3');
+    return name.replace(/^(BRIG)\s*(MEDIA)$/i, '$1 <span style="color:var(--cyan)">$2</span>');
   }
 
   // Nav logo & footer logo
@@ -423,9 +422,9 @@ function starsHTML(count) {
   document.getElementById('footer-logo-text').innerHTML = brandHTML(C.brandName);
 
   // Hero headline
-  const parts = C.brandName.match(/^(BRIG)(X)(MEDIA)$/i);
+  const parts = C.brandName.match(/^(BRIG)\s*(MEDIA)$/i);
   document.getElementById('hero-headline').innerHTML = parts
-    ? `${parts[1]}<span class="cyan">${parts[2]}</span><br>${parts[3]}`
+    ? `${parts[1]}<br><span class="cyan">${parts[2]}</span>`
     : C.brandName;
 
   // Tagline
