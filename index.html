@@ -10,6 +10,10 @@
   <meta property="og:type" content="website" />
   <title>BRIG MEDIA — We Turn Attention Into Demand</title>
   <link rel="stylesheet" href="style.css" />
+
+  <!-- ▼ Load config files FIRST so all variables are available -->
+  <script src="config/config.js"></script>
+  <script src="config/videos.js"></script>
 </head>
 <body>
 
@@ -18,7 +22,7 @@
 ══════════════════════════════════════ -->
 <nav id="navbar">
   <div class="container nav-inner">
-    <a href="#hero" class="nav-logo">BRIG<span>X</span>MEDIA</a>
+    <a href="#hero" class="nav-logo" id="nav-logo-text"></a>
     <ul class="nav-links">
       <li><a href="#services">Services</a></li>
       <li><a href="#showreel">Showreel</a></li>
@@ -27,7 +31,7 @@
       <li><a href="#plans">Pricing</a></li>
     </ul>
     <div class="nav-cta">
-      <a href="https://wa.me/91XXXXXXXXXX" target="_blank" class="btn btn-outline">WhatsApp</a>
+      <a href="#" id="nav-whatsapp-btn" target="_blank" class="btn btn-outline">WhatsApp</a>
       <a href="#final-cta" class="btn btn-primary">Get Started</a>
     </div>
   </div>
@@ -46,12 +50,10 @@
     <div class="hero-content">
       <div class="hero-badge">Now Onboarding New Clients</div>
 
-      <h1 class="hero-headline">
-        BRIG<span class="cyan">X</span><br>MEDIA
-      </h1>
+      <h1 class="hero-headline" id="hero-headline"></h1>
 
       <p class="hero-tagline">
-        <strong>We Turn Attention Into Demand.</strong>
+        <strong id="hero-tagline-text"></strong>
       </p>
 
       <p class="hero-desc">
@@ -63,7 +65,7 @@
         <a href="#final-cta" id="btn-get-started" class="btn btn-primary">
           ▶&nbsp; Get Started
         </a>
-        <a href="https://wa.me/91XXXXXXXXXX" target="_blank" id="btn-whatsapp-hero" class="btn btn-whatsapp">
+        <a href="#" target="_blank" id="btn-whatsapp-hero" class="btn btn-whatsapp">
           💬&nbsp; WhatsApp Us
         </a>
       </div>
@@ -88,23 +90,7 @@
       <span class="trusted-label">Trusted By<br>Growing Brands</span>
       <div class="logos-track">
         <div class="logos-inner" id="logos-inner">
-          <div class="logo-item">FitZone</div>
-          <div class="logo-item">StyleCo</div>
-          <div class="logo-item">BrewHouse</div>
-          <div class="logo-item">NovaTech</div>
-          <div class="logo-item">LuxeWear</div>
-          <div class="logo-item">FreshCafé</div>
-          <div class="logo-item">UrbanFit</div>
-          <div class="logo-item">GlowSkin</div>
-          <!-- Duplicate for seamless loop -->
-          <div class="logo-item">FitZone</div>
-          <div class="logo-item">StyleCo</div>
-          <div class="logo-item">BrewHouse</div>
-          <div class="logo-item">NovaTech</div>
-          <div class="logo-item">LuxeWear</div>
-          <div class="logo-item">FreshCafé</div>
-          <div class="logo-item">UrbanFit</div>
-          <div class="logo-item">GlowSkin</div>
+          <!-- Injected dynamically from config.js → SITE_CONFIG.clients -->
         </div>
       </div>
     </div>
@@ -124,6 +110,7 @@
       </p>
     </div>
 
+    <!-- Thumbnail / play button — clicking opens the embed modal -->
     <div class="showreel-wrapper reveal" id="showreel-player" tabindex="0" role="button" aria-label="Play showreel">
       <img src="assets/showreel_thumb.png" alt="BRIG MEDIA Showreel" class="showreel-thumb" />
       <div class="showreel-overlay">
@@ -135,10 +122,29 @@
     </div>
 
     <div class="showreel-cta reveal" style="text-align:center;">
-      <a href="#" id="btn-watch-work" class="btn btn-outline">Watch Our Work →</a>
+      <a href="#" id="btn-watch-work" target="_blank" class="btn btn-outline">Watch Our Work →</a>
     </div>
   </div>
 </section>
+
+<!-- Video Embed Modal -->
+<div id="video-modal" style="
+  display:none; position:fixed; inset:0; z-index:9999;
+  background:rgba(0,5,10,0.92); align-items:center; justify-content:center;
+  backdrop-filter:blur(8px);">
+  <div style="position:relative; width:90%; max-width:900px;">
+    <button id="modal-close" style="
+      position:absolute; top:-44px; right:0;
+      background:none; border:none; color:var(--cyan);
+      font-size:28px; cursor:pointer; line-height:1;">✕</button>
+    <div id="video-embed-container" style="
+      position:relative; padding-top:56.25%;
+      border-radius:16px; overflow:hidden;
+      box-shadow:0 0 80px rgba(0,229,255,0.25);">
+      <!-- iframe injected dynamically by JS -->
+    </div>
+  </div>
+</div>
 
 <!-- ══════════════════════════════════════
      4. WHY US
@@ -271,24 +277,8 @@
       <h2 class="section-title">Client Results &amp; Feedback</h2>
     </div>
 
-    <div class="testi-grid">
-      <div class="testi-card reveal">
-        <div class="stars">★★★★★</div>
-        <p class="testi-text">"Better enquiries started coming in almost immediately after BRIG MEDIA took over our reels. The quality shift was noticeable right away."</p>
-        <span class="testi-author">— Fitness Studio Owner</span>
-      </div>
-
-      <div class="testi-card reveal">
-        <div class="stars">★★★★★</div>
-        <p class="testi-text">"Our brand finally looks premium online. The video quality and consistency of posts transformed how customers perceive us."</p>
-        <span class="testi-author">— Clothing Brand Founder</span>
-      </div>
-
-      <div class="testi-card reveal">
-        <div class="stars">★★★★★</div>
-        <p class="testi-text">"Consistent growth month after month. We handed them our social media and just focused on running the café — it works."</p>
-        <span class="testi-author">— Café Owner</span>
-      </div>
+    <div class="testi-grid" id="testi-grid">
+      <!-- Injected dynamically from config.js → SITE_CONFIG.testimonials -->
     </div>
   </div>
 </section>
@@ -320,7 +310,7 @@
 
       <div class="plans-cta">
         <a href="#" id="btn-custom-proposal" class="btn btn-primary" style="width:100%; justify-content:center;">Get Custom Proposal</a>
-        <a href="https://wa.me/91XXXXXXXXXX" target="_blank" id="btn-whatsapp-plans" class="btn btn-whatsapp" style="width:100%; justify-content:center;">💬 WhatsApp Now</a>
+        <a href="#" target="_blank" id="btn-whatsapp-plans" class="btn btn-whatsapp" style="width:100%; justify-content:center;">💬 WhatsApp Now</a>
         <p class="plans-note">No commitment. Free consultation.</p>
       </div>
     </div>
@@ -338,7 +328,7 @@
     <p>Let BRIG MEDIA become your growth content partner.</p>
     <div class="cta-btns">
       <a href="#" id="btn-strategy-call" class="btn btn-primary" style="font-size:16px; padding:16px 36px;">📞 Book Free Strategy Call</a>
-      <a href="https://wa.me/91XXXXXXXXXX" target="_blank" id="btn-whatsapp-cta" class="btn btn-whatsapp" style="font-size:16px; padding:16px 36px;">💬 WhatsApp Now</a>
+      <a href="#" target="_blank" id="btn-whatsapp-cta" class="btn btn-whatsapp" style="font-size:16px; padding:16px 36px;">💬 WhatsApp Now</a>
     </div>
     <p class="cta-note">⚡ Currently onboarding <span>limited monthly clients</span> — secure your spot today.</p>
   </div>
@@ -351,13 +341,13 @@
   <div class="container">
     <div class="footer-inner">
       <div class="footer-brand">
-        <a href="#hero" class="nav-logo">BRIG<span>X</span>MEDIA</a>
-        <p class="footer-tagline">We Turn Attention Into Demand.</p>
+        <a href="#hero" class="nav-logo" id="footer-logo-text"></a>
+        <p class="footer-tagline" id="footer-tagline"></p>
         <div class="footer-contact">
-          <a href="mailto:hello@brigmedia.in">📧 hello@brigmedia.in</a>
-          <a href="https://wa.me/91XXXXXXXXXX" target="_blank">📲 WhatsApp Us</a>
-          <a href="https://brigmedia.in" target="_blank">🌐 brigmedia.in</a>
-          <span style="color:var(--grey); font-size:14px; display:flex; align-items:center; gap:10px;">📍 India</span>
+          <a href="#" id="footer-email">📧 <span id="footer-email-text"></span></a>
+          <a href="#" target="_blank" id="footer-whatsapp">📲 WhatsApp Us</a>
+          <a href="#" target="_blank" id="footer-website">🌐 <span id="footer-website-text"></span></a>
+          <span style="color:var(--grey); font-size:14px; display:flex; align-items:center; gap:10px;">📍 <span id="footer-location"></span></span>
         </div>
       </div>
 
@@ -381,7 +371,7 @@
     </div>
 
     <div class="footer-bottom">
-      <span>© 2026 BRIG MEDIA. All rights reserved.</span>
+      <span id="footer-copyright"></span>
       <div style="display:flex; gap:24px;">
         <a href="#">Privacy Policy</a>
         <a href="#">Terms of Service</a>
@@ -394,28 +384,181 @@
      SCRIPTS
 ══════════════════════════════════════ -->
 <script>
-  // Navbar scroll effect
-  const navbar = document.getElementById('navbar');
-  window.addEventListener('scroll', () => {
-    navbar.classList.toggle('scrolled', window.scrollY > 40);
+// ── Helpers ───────────────────────────────────────────────────────────────────
+function waLink(number) {
+  return `https://wa.me/${number}`;
+}
+
+function starsHTML(count) {
+  return '★'.repeat(count) + '☆'.repeat(5 - count);
+}
+
+// ── Apply SITE_CONFIG ──────────────────────────────────────────────────────────
+(function applySiteConfig() {
+  const C = SITE_CONFIG;
+  const wa = waLink(C.whatsappNumber);
+
+  // Brand name helper — splits "BRIGXMEDIA" → "BRIG<span>X</span>MEDIA"
+  function brandHTML(name) {
+    // Insert cyan span around the "X" separator if present
+    return name.replace(/^(BRIG)(X)(MEDIA)$/i, '$1<span>$2</span>$3');
+  }
+
+  // Nav logo & footer logo
+  document.getElementById('nav-logo-text').innerHTML    = brandHTML(C.brandName);
+  document.getElementById('footer-logo-text').innerHTML = brandHTML(C.brandName);
+
+  // Hero headline
+  const parts = C.brandName.match(/^(BRIG)(X)(MEDIA)$/i);
+  document.getElementById('hero-headline').innerHTML = parts
+    ? `${parts[1]}<span class="cyan">${parts[2]}</span><br>${parts[3]}`
+    : C.brandName;
+
+  // Tagline
+  document.getElementById('hero-tagline-text').textContent = C.tagline;
+
+  // Footer tagline + contact
+  document.getElementById('footer-tagline').textContent      = C.tagline;
+  document.getElementById('footer-email').href               = `mailto:${C.email}`;
+  document.getElementById('footer-email-text').textContent   = C.email;
+  document.getElementById('footer-whatsapp').href            = wa;
+  document.getElementById('footer-website').href             = C.website;
+  document.getElementById('footer-website-text').textContent = C.website.replace(/^https?:\/\//, '');
+  document.getElementById('footer-location').textContent     = C.location;
+  document.getElementById('footer-copyright').textContent    = `© ${C.year} BRIG MEDIA. All rights reserved.`;
+
+  // WhatsApp buttons
+  const whatsappBtns = [
+    'nav-whatsapp-btn',
+    'btn-whatsapp-hero',
+    'btn-whatsapp-plans',
+    'btn-whatsapp-cta',
+  ];
+  whatsappBtns.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.href = wa;
   });
 
-  // Intersection Observer — reveal on scroll
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.12 });
+  // Strategy call button
+  const callBtn = document.getElementById('btn-strategy-call');
+  if (callBtn) callBtn.href = C.strategyCallUrl;
 
+  // Custom Proposal button (can point to WhatsApp or a form)
+  const proposalBtn = document.getElementById('btn-custom-proposal');
+  if (proposalBtn) proposalBtn.href = C.strategyCallUrl;
+
+  // ── Client logos (Trusted By) ──
+  const logosInner = document.getElementById('logos-inner');
+  if (logosInner && C.clients.length) {
+    // Duplicate list for seamless CSS scroll animation
+    const allClients = [...C.clients, ...C.clients];
+    logosInner.innerHTML = allClients
+      .map(name => `<div class="logo-item">${name}</div>`)
+      .join('');
+  }
+
+  // ── Testimonials ──
+  const testiGrid = document.getElementById('testi-grid');
+  if (testiGrid && C.testimonials.length) {
+    testiGrid.innerHTML = C.testimonials.map(t => `
+      <div class="testi-card reveal">
+        <div class="stars">${starsHTML(t.stars)}</div>
+        <p class="testi-text">"${t.quote}"</p>
+        <span class="testi-author">— ${t.author}</span>
+      </div>
+    `).join('');
+  }
+})();
+
+// ── Apply VIDEO_CONFIG ─────────────────────────────────────────────────────────
+(function applyVideoConfig() {
+  const V = VIDEO_CONFIG;
+
+  // "Watch Our Work" portfolio link
+  const watchBtn = document.getElementById('btn-watch-work');
+  if (watchBtn && V.portfolioUrl) watchBtn.href = V.portfolioUrl;
+
+  // Modal open/close
+  const modal     = document.getElementById('video-modal');
+  const closeBtn  = document.getElementById('modal-close');
+  const embedBox  = document.getElementById('video-embed-container');
+  const player    = document.getElementById('showreel-player');
+
+  function buildEmbed() {
+    const sr = V.showreel;
+    if (sr.type === 'youtube' && sr.youtubeId) {
+      return `<iframe
+        src="https://www.youtube.com/embed/${sr.youtubeId}?autoplay=1&rel=0"
+        style="position:absolute;inset:0;width:100%;height:100%;border:none;"
+        allow="autoplay; encrypted-media; picture-in-picture"
+        allowfullscreen></iframe>`;
+    }
+    if (sr.type === 'instagram' && sr.instagramUrl) {
+      // Instagram embed — strips trailing slash then adds /embed
+      const base = sr.instagramUrl.replace(/\/$/, '');
+      return `<iframe
+        src="${base}/embed"
+        style="position:absolute;inset:0;width:100%;height:100%;border:none;"
+        allowfullscreen scrolling="no"></iframe>`;
+    }
+    return '<p style="color:var(--grey);padding:24px;">No video configured yet. Update videos.js.</p>';
+  }
+
+  function openModal() {
+    embedBox.innerHTML = buildEmbed();
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    embedBox.innerHTML = '';          // stop video playback
+    modal.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+
+  if (player) {
+    player.addEventListener('click', openModal);
+    player.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') openModal(); });
+  }
+  if (closeBtn) closeBtn.addEventListener('click', closeModal);
+  modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+})();
+
+// ── Navbar scroll effect ───────────────────────────────────────────────────────
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 40);
+});
+
+// ── Intersection Observer — reveal on scroll ───────────────────────────────────
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12 });
+
+// Observe all .reveal elements (including dynamically injected ones)
+function observeReveal() {
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+}
+observeReveal();
 
-  // Stagger children inside grids
-  document.querySelectorAll('.services-grid .service-card, .results-grid .result-card, .testi-grid .testi-card, .why-checks .check-item').forEach((el, i) => {
-    el.style.transitionDelay = `${i * 0.08}s`;
-  });
+// Stagger children inside grids
+document.querySelectorAll(
+  '.services-grid .service-card, .results-grid .result-card, .why-checks .check-item'
+).forEach((el, i) => {
+  el.style.transitionDelay = `${i * 0.08}s`;
+});
+
+// Re-observe testimonials that were injected dynamically
+document.querySelectorAll('#testi-grid .testi-card').forEach((el, i) => {
+  el.style.transitionDelay = `${i * 0.08}s`;
+  observer.observe(el);
+});
 </script>
 
 </body>
