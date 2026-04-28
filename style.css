@@ -826,16 +826,39 @@ footer {
 /* ── RESPONSIVE ── */
 @media (max-width: 900px) {
   .nav-links { display: none; }
-  .why-grid { grid-template-columns: 1fr; }
+  .nav-cta .btn-outline { display: none; } /* Hide secondary CTA on tablet/mobile to save space */
+  
+  .why-grid { grid-template-columns: 1fr; gap: 40px; }
   .services-grid { grid-template-columns: 1fr; }
-  .results-grid { grid-template-columns: repeat(2, 1fr); }
-  .testi-grid { grid-template-columns: 1fr; }
-  .plans-card { flex-direction: column; padding: 40px 28px; gap: 36px; }
-  .footer-inner { flex-direction: column; }
+  .results-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .testi-grid { grid-template-columns: 1fr; gap: 20px; }
+  .plans-card { flex-direction: column; padding: 40px 24px; gap: 32px; }
+  .plans-cta { width: 100%; }
+  .footer-inner { flex-direction: column; gap: 32px; }
+  
+  .hero-glow, .hero-glow-2 { opacity: 0.5; } /* Reduce glow intensity on smaller screens */
 }
+
 @media (max-width: 600px) {
-  .hero-btns { flex-direction: column; }
-  .results-grid { grid-template-columns: 1fr 1fr; }
+  .section { padding: 60px 0; } /* Reduce section padding */
+  
+  .hero-headline { font-size: clamp(36px, 12vw, 50px); }
+  .hero-tagline { font-size: 16px; }
+  .hero-btns { flex-direction: column; width: 100%; gap: 12px; }
+  .hero-btns .btn { width: 100%; justify-content: center; }
+  
+  .results-grid { grid-template-columns: 1fr; }
   .plans-checks { grid-template-columns: 1fr; }
-  .trusted-inner { flex-direction: column; gap: 20px; }
+  .trusted-inner { flex-direction: column; gap: 20px; text-align: center; }
+  
+  .showreel-thumb { height: 260px; } /* Smaller video thumbnail */
+  .play-btn { width: 64px; height: 64px; }
+  .play-icon { border-width: 12px 0 12px 20px; margin-left: 4px; }
+  
+  #final-cta { padding: 80px 0; }
+  #final-cta h2 { font-size: 32px; }
+  .cta-btns { flex-direction: column; width: 100%; }
+  .cta-btns .btn { width: 100%; justify-content: center; }
+  
+  .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
 }
