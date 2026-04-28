@@ -15,7 +15,7 @@ const SITE_CONFIG = {
   location: "India",
 
   // ── CONTACT ───────────────────────────────────────────────
-  whatsappNumber: "91XXXXXXXXXX",   // e.g. "919876543210" (no + or spaces)
+  whatsappNumber: "919449630359",   // e.g. "919876543210" (no + or spaces)
   email: "hello@brigmedia.in",
   website: "https://brigmedia.in",
 
