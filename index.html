@@ -18,6 +18,13 @@
 <body class="no-scroll">
 
 <!-- ══════════════════════════════════════
+     CUSTOM CURSOR
+══════════════════════════════════════ -->
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+
+
+<!-- ══════════════════════════════════════
      PRELOADER (HEXAGONAL SHUTTER)
 ══════════════════════════════════════ -->
 <div id="preloader">
@@ -53,6 +60,7 @@
      1. HERO
 ══════════════════════════════════════ -->
 <section id="hero">
+  <canvas id="hero-canvas"></canvas>
   <div class="hero-bg"></div>
   <div class="hero-grid-overlay"></div>
   <div class="hero-glow"></div>
@@ -122,16 +130,8 @@
       </p>
     </div>
 
-    <!-- Thumbnail / play button — clicking opens the embed modal -->
-    <div class="showreel-wrapper reveal" id="showreel-player" tabindex="0" role="button" aria-label="Play showreel">
-      <img src="assets/showreel_thumb.png" alt="BRIG MEDIA Showreel" class="showreel-thumb" />
-      <div class="showreel-overlay">
-        <div class="play-btn">
-          <div class="play-icon"></div>
-        </div>
-        <div class="showreel-tags">Brand Films &bull; Reels &bull; Commercials &bull; Social Campaigns</div>
-      </div>
-    </div>
+    <!-- Dynamic video grid populated from config/videos.js -->
+    <div id="work-grid" class="work-grid"></div>
 
     <div class="showreel-cta reveal" style="text-align:center;">
       <a href="#" id="btn-watch-work" target="_blank" class="btn btn-outline">Watch Our Work →</a>
@@ -491,48 +491,88 @@ function starsHTML(count) {
   const watchBtn = document.getElementById('btn-watch-work');
   if (watchBtn && V.portfolioUrl) watchBtn.href = V.portfolioUrl;
 
-  // Modal open/close
+  // Modal components
   const modal     = document.getElementById('video-modal');
   const closeBtn  = document.getElementById('modal-close');
   const embedBox  = document.getElementById('video-embed-container');
-  const player    = document.getElementById('showreel-player');
+  const workGrid  = document.getElementById('work-grid');
 
-  function buildEmbed() {
-    const sr = V.showreel;
-    if (sr.type === 'youtube' && sr.youtubeId) {
-      return `<iframe
-        src="https://www.youtube.com/embed/${sr.youtubeId}?autoplay=1&rel=0"
-        style="position:absolute;inset:0;width:100%;height:100%;border:none;"
-        allow="autoplay; encrypted-media; picture-in-picture"
-        allowfullscreen></iframe>`;
-    }
-    if (sr.type === 'instagram' && sr.instagramUrl) {
-      // Instagram embed — strips trailing slash then adds /embed
-      const base = sr.instagramUrl.replace(/\/$/, '');
-      return `<iframe
-        src="${base}/embed"
-        style="position:absolute;inset:0;width:100%;height:100%;border:none;"
-        allowfullscreen scrolling="no"></iframe>`;
-    }
-    return '<p style="color:var(--grey);padding:24px;">No video configured yet. Update videos.js.</p>';
+  if (workGrid && V.works && V.works.length) {
+    // Generate grid HTML dynamically
+    workGrid.innerHTML = V.works.map((work) => {
+      const isShort = work.type === 'short';
+
+      // Both YouTube and Shorts use the same thumbnail API
+      const thumb         = `https://img.youtube.com/vi/${work.youtubeId}/maxresdefault.jpg`;
+      const fallbackThumb = `https://img.youtube.com/vi/${work.youtubeId}/hqdefault.jpg`;
+
+      // Shorts badge
+      const badge = isShort
+        ? `<span style="position:absolute;top:14px;right:14px;background:linear-gradient(135deg,#ff0000,#cc0000);color:#fff;font-size:11px;font-weight:700;letter-spacing:1px;padding:4px 10px;border-radius:20px;text-transform:uppercase;">Short</span>`
+        : '';
+
+      // Shorts are 9:16 portrait; regular videos are 16:9
+      const aspectStyle = isShort
+        ? 'aspect-ratio: 9/16; max-width: 340px; margin: 0 auto;'
+        : '';
+
+      return `
+        <div class="showreel-wrapper reveal work-item ${isShort ? 'work-short' : ''}" data-type="${work.type}" data-value="${work.youtubeId}" tabindex="0" role="button" aria-label="Play ${work.title}" style="${aspectStyle}">
+          <img src="${thumb}" onerror="this.src='${fallbackThumb}'" alt="${work.title}" class="showreel-thumb" />
+          ${badge}
+          <div class="showreel-overlay">
+            <div class="play-btn">
+              <div class="play-icon"></div>
+            </div>
+            <div style="color:#fff; font-size:18px; font-weight:800; font-family:'Outfit', sans-serif; margin-bottom:8px; text-align:center; padding: 0 16px;">${work.title}</div>
+            <div class="showreel-tags">${work.tags}</div>
+          </div>
+        </div>
+      `;
+    }).join('');
   }
 
-  function openModal() {
-    embedBox.innerHTML = buildEmbed();
+  function openModal(type, youtubeId) {
+    if (!youtubeId) return;
+    const isShort = type === 'short';
+
+    // Shorts modal should be portrait — override padding-top for 9:16
+    embedBox.style.paddingTop = isShort ? '177.78%' : '56.25%';
+
+    embedBox.innerHTML = `<iframe
+      src="https://www.youtube.com/embed/${youtubeId}?autoplay=1&rel=0"
+      style="position:absolute;inset:0;width:100%;height:100%;border:none;"
+      allow="autoplay; encrypted-media; picture-in-picture"
+      allowfullscreen></iframe>`;
+
     modal.style.display = 'flex';
     document.body.style.overflow = 'hidden';
   }
 
   function closeModal() {
-    embedBox.innerHTML = '';          // stop video playback
+    embedBox.innerHTML = '';
+    embedBox.style.paddingTop = '56.25%'; // reset to landscape default
     modal.style.display = 'none';
     document.body.style.overflow = '';
   }
 
-  if (player) {
-    player.addEventListener('click', openModal);
-    player.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') openModal(); });
+  // Event Delegation for Grid Items
+  if (workGrid) {
+    workGrid.addEventListener('click', (e) => {
+      const item = e.target.closest('.work-item');
+      if (item) openModal(item.getAttribute('data-type'), item.getAttribute('data-value'));
+    });
+    workGrid.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        const item = e.target.closest('.work-item');
+        if (item) {
+          e.preventDefault();
+          openModal(item.getAttribute('data-type'), item.getAttribute('data-value'));
+        }
+      }
+    });
   }
+
   if (closeBtn) closeBtn.addEventListener('click', closeModal);
   modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
@@ -598,6 +638,193 @@ document.querySelectorAll('#testi-grid .testi-card').forEach((el, i) => {
   el.style.transitionDelay = `${i * 0.08}s`;
   observer.observe(el);
 });
+
+// ── Custom Cursor ─────────────────────────────────────────────────────────────
+(function initCursor() {
+  // Only on non-touch devices
+  if (window.matchMedia('(hover: none)').matches) return;
+
+  const dot  = document.getElementById('cursor-dot');
+  const ring = document.getElementById('cursor-ring');
+
+  let mouseX = 0, mouseY = 0;
+  let ringX  = 0, ringY  = 0;
+
+  // Track actual mouse position instantly for the dot
+  document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    dot.style.transform = `translate(${mouseX}px, ${mouseY}px)`;
+  });
+
+  // Smooth-follow the ring with lerp
+  function animateRing() {
+    ringX += (mouseX - ringX) * 0.12;
+    ringY += (mouseY - ringY) * 0.12;
+    ring.style.transform = `translate(${ringX}px, ${ringY}px)`;
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+
+  // Hover state on interactive elements
+  const interactives = 'a, button, .btn, .work-item, .service-card, .showreel-wrapper, [tabindex]';
+  document.addEventListener('mouseover', (e) => {
+    if (e.target.closest(interactives)) {
+      dot.classList.add('cursor-hover');
+      ring.classList.add('cursor-hover');
+    }
+  });
+  document.addEventListener('mouseout', (e) => {
+    if (e.target.closest(interactives)) {
+      dot.classList.remove('cursor-hover');
+      ring.classList.remove('cursor-hover');
+    }
+  });
+
+  // Click pulse
+  document.addEventListener('mousedown', () => {
+    dot.classList.add('cursor-click');
+    ring.classList.add('cursor-click');
+  });
+  document.addEventListener('mouseup', () => {
+    dot.classList.remove('cursor-click');
+    ring.classList.remove('cursor-click');
+  });
+
+  // Show cursor only once mouse enters viewport
+  document.addEventListener('mouseenter', () => {
+    dot.style.opacity  = '1';
+    ring.style.opacity = '1';
+  });
+  document.addEventListener('mouseleave', () => {
+    dot.style.opacity  = '0';
+    ring.style.opacity = '0';
+  });
+})();
+// ── Hero Particle Canvas ───────────────────────────────────────────────────
+(function initHeroCanvas() {
+  const canvas = document.getElementById('hero-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  let W, H, particles;
+  let mouse = { x: -9999, y: -9999 };
+
+  const PARTICLE_COUNT = 72;
+  const CONNECTION_DIST = 140;   // px — max dist to draw a line
+  const REPEL_DIST = 110;        // px — cursor pushes particles away
+  const REPEL_STRENGTH = 2.8;
+  const SPEED = 0.35;
+
+  function resize() {
+    W = canvas.width  = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+  }
+
+  function randomParticle() {
+    const angle = Math.random() * Math.PI * 2;
+    const speed = SPEED * (0.5 + Math.random() * 0.5);
+    return {
+      x: Math.random() * W,
+      y: Math.random() * H,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed,
+      r: 1.5 + Math.random() * 1.5,
+      alpha: 0.3 + Math.random() * 0.5
+    };
+  }
+
+  function init() {
+    resize();
+    particles = Array.from({ length: PARTICLE_COUNT }, randomParticle);
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+
+    for (let i = 0; i < particles.length; i++) {
+      const p = particles[i];
+
+      // Cursor repulsion
+      const dx = p.x - mouse.x;
+      const dy = p.y - mouse.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < REPEL_DIST && dist > 0) {
+        const force = (1 - dist / REPEL_DIST) * REPEL_STRENGTH;
+        p.vx += (dx / dist) * force * 0.04;
+        p.vy += (dy / dist) * force * 0.04;
+      }
+
+      // Damping
+      p.vx *= 0.985;
+      p.vy *= 0.985;
+
+      // Restore base drift if nearly stopped
+      const spd = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
+      if (spd < SPEED * 0.3) {
+        p.vx += (Math.random() - 0.5) * 0.06;
+        p.vy += (Math.random() - 0.5) * 0.06;
+      }
+
+      p.x += p.vx;
+      p.y += p.vy;
+
+      // Wrap edges
+      if (p.x < -10) p.x = W + 10;
+      if (p.x > W + 10) p.x = -10;
+      if (p.y < -10) p.y = H + 10;
+      if (p.y > H + 10) p.y = -10;
+
+      // Draw particle dot
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(0, 229, 255, ${p.alpha})`;
+      ctx.fill();
+
+      // Draw connection lines to nearby particles
+      for (let j = i + 1; j < particles.length; j++) {
+        const q = particles[j];
+        const ldx = p.x - q.x;
+        const ldy = p.y - q.y;
+        const ldist = Math.sqrt(ldx * ldx + ldy * ldy);
+        if (ldist < CONNECTION_DIST) {
+          const lineAlpha = (1 - ldist / CONNECTION_DIST) * 0.18;
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(q.x, q.y);
+          ctx.strokeStyle = `rgba(0, 229, 255, ${lineAlpha})`;
+          ctx.lineWidth = 0.8;
+          ctx.stroke();
+        }
+      }
+    }
+
+    requestAnimationFrame(draw);
+  }
+
+  // Track mouse only inside hero
+  const hero = document.getElementById('hero');
+  hero.addEventListener('mousemove', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    mouse.x = e.clientX - rect.left;
+    mouse.y = e.clientY - rect.top;
+  });
+  hero.addEventListener('mouseleave', () => {
+    mouse.x = -9999;
+    mouse.y = -9999;
+  });
+
+  window.addEventListener('resize', () => {
+    resize();
+    particles.forEach(p => {
+      p.x = Math.min(p.x, W);
+      p.y = Math.min(p.y, H);
+    });
+  });
+
+  init();
+  draw();
+})();
 </script>
 
 </body>

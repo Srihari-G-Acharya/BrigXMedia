@@ -1,32 +1,61 @@
 /**
  * ╔══════════════════════════════════════════════════════════╗
- * ║            BRIGXMEDIA — VIDEO CONFIGURATION              ║
- * ║  Edit this file to update showreel and portfolio videos. ║
+ * ║            BRIG MEDIA — VIDEO CONFIGURATION              ║
+ * ║  Edit this file to populate the "Our Work" grid.         ║
  * ║                                                          ║
- * ║  SUPPORTED PLATFORMS:                                    ║
- * ║    YouTube  → set type: "youtube", id: "VIDEO_ID"        ║
- * ║    Instagram → set type: "instagram", url: "POST_URL"    ║
+ * ║  HOW TO ADD A REGULAR YOUTUBE VIDEO:                     ║
+ * ║    { type: "youtube", youtubeId: "VIDEO_ID", ... }       ║
+ * ║    → Get ID from: youtube.com/watch?v=VIDEO_ID           ║
+ * ║                                                          ║
+ * ║  HOW TO ADD A YOUTUBE SHORT:                             ║
+ * ║    { type: "short", youtubeId: "VIDEO_ID", ... }         ║
+ * ║    → Get ID from: youtube.com/shorts/VIDEO_ID            ║
  * ╚══════════════════════════════════════════════════════════╝
  */
 
 const VIDEO_CONFIG = {
 
-  // ── MAIN SHOWREEL ─────────────────────────────────────────
-  // This plays when a visitor clicks the big play button.
-  showreel: {
-    type: "youtube",              // "youtube" | "instagram"
+  // ── OUR WORK VIDEO GRID ───────────────────────────────────────
+  // Add or remove entries below. Mix regular videos and Shorts.
+  // The grid auto-populates — no other file needs to be edited.
+  works: [
 
-    // ── YouTube ──────────────────────────────────────────
-    // Grab the ID from the URL: youtube.com/watch?v=XXXXXXXXXXX
-    youtubeId: "dQw4w9WgXcQ",    // ← replace with your YouTube video ID
+    // ── Regular YouTube Video ─────────────────────────────────
+    {
+      type: "youtube",
+      youtubeId: "dQw4w9WgXcQ",     // ← replace with your YouTube video ID
+      title: "Brand Film 2026",
+      tags: "Brand Films • Commercials"
+    },
 
-    // ── Instagram (uncomment & fill in if using Instagram) ──
-    // type: "instagram",
-    // instagramUrl: "https://www.instagram.com/reel/XXXXXXXXXXX/",
-  },
+    // ── YouTube Short (portrait 9:16) ─────────────────────────
+    {
+      type: "short",
+      youtubeId: "V-_O7nl0Ii0",     // ← replace with your Shorts video ID
+      title: "Behind The Shoot",
+      tags: "Reels • Short-form"
+    },
 
-  // ── PORTFOLIO / "WATCH OUR WORK" LINK ────────────────────
-  // Where the "Watch Our Work →" button takes the visitor.
-  portfolioUrl: "https://www.youtube.com/@brigmedia",  // ← your channel or portfolio page
+    // ── Regular YouTube Video ─────────────────────────────────
+    {
+      type: "youtube",
+      youtubeId: "tgbNymZ7vqY",
+      title: "LuxeWear Autumn Collection",
+      tags: "Brand Films • Reels"
+    },
+
+    // ── YouTube Short ─────────────────────────────────────────
+    {
+      type: "short",
+      youtubeId: "9bZkp7q19f0",
+      title: "60-Second Café Spot",
+      tags: "Short-form • Commercials"
+    },
+
+  ],
+
+  // ── PORTFOLIO / "WATCH OUR WORK" BUTTON LINK ─────────────────
+  // Where the button at the bottom of the section takes visitors.
+  portfolioUrl: "https://www.youtube.com/@brigmedia",
 
 };
