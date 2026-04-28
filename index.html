@@ -15,7 +15,19 @@
   <script src="config/config.js"></script>
   <script src="config/videos.js"></script>
 </head>
-<body>
+<body class="no-scroll">
+
+<!-- ══════════════════════════════════════
+     PRELOADER (HEXAGONAL SHUTTER)
+══════════════════════════════════════ -->
+<div id="preloader">
+  <div class="shutter-overlay"></div>
+  <div class="preloader-logo">
+    <img src="assets/brig_logo_cyan.png" alt="BRIG MEDIA Logo" />
+  </div>
+</div>
+
+<div id="site-wrapper" style="opacity: 0; transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);">
 
 <!-- ══════════════════════════════════════
      NAV
@@ -380,6 +392,8 @@
   </div>
 </footer>
 
+</div> <!-- end #site-wrapper -->
+
 <!-- ══════════════════════════════════════
      SCRIPTS
 ══════════════════════════════════════ -->
@@ -524,6 +538,32 @@ function starsHTML(count) {
   modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 })();
+
+// ── Preloader Animation ────────────────────────────────────────────────────────
+window.addEventListener('load', () => {
+  const preloader = document.getElementById('preloader');
+  const siteWrapper = document.getElementById('site-wrapper');
+  
+  if (preloader && siteWrapper) {
+    // Wait for logo to fade in (1.2s) + short pause
+    setTimeout(() => {
+      // Trigger hexagon shutter opening
+      preloader.classList.add('shutter-open');
+      
+      // Fade in the website content smoothly
+      siteWrapper.style.opacity = '1';
+      document.body.classList.remove('no-scroll');
+
+      // Remove preloader completely after animation finishes
+      setTimeout(() => {
+        preloader.style.display = 'none';
+      }, 1500);
+    }, 1500);
+  } else {
+    document.body.classList.remove('no-scroll');
+    if (siteWrapper) siteWrapper.style.opacity = '1';
+  }
+});
 
 // ── Navbar scroll effect ───────────────────────────────────────────────────────
 const navbar = document.getElementById('navbar');
